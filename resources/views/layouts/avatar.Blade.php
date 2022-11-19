@@ -1,7 +1,7 @@
 
     <a class="nav-link"  href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     
-            <img class="rounded-circle" src="{{ 'http://localhost/bizsett/public/storage/fotos_perfiles/' . $user->foto_perfil}}" style="width: 40px; height: 40px;">            
+            <img class="rounded-circle" src="{{'http://localhost/bizsett/public/storage/fotos_perfiles/'.$user->foto_perfil}}" style="width: 40px; height: 40px;">            
     
     </a>
     {{-- Todo el contenido dentro del dropdown--}}
@@ -10,7 +10,7 @@
     {{-- Foto usuario --}}
     <center>
         <a href="{{route('foto.me', $user)}}">
-            <img class="rounded-circle" src="{{ 'http://localhost/bizsett/public/storage/fotos_perfiles/' . $user->foto_perfil}}" style="width: 60px; height: 60px; ">
+            <img class="rounded-circle" src="{{'http://localhost/bizsett/public/storage/fotos_perfiles/'.$user->foto_perfil}}" style="width: 60px; height: 60px; ">
         </a>
     </center>
     {{-- Name usuario --}}

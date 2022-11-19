@@ -3,28 +3,29 @@
     
     width: 100%;
     height: 600px;
-    background: #bdc3c7;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, rgba(43, 61, 80, 0), hsla(204, 8%, 76%, 0)), url('http://localhost/bizsett/public/storage/img/pexels-krivec-ales-548264.jpg'); 
+    background: #E4E9F7;  /* fallback for old browsers */
+    /* background: -webkit-linear-gradient(to right, rgba(43, 61, 80, 0), hsla(204, 8%, 76%, 0)), url('http://localhost/bizsett/public/storage/img/pexels-krivec-ales-548264.jpg'); 
     background: linear-gradient(to right, rgba(43, 61, 80, 0), hsla(204, 8%, 76%, 0)), url('http://localhost/bizsett/public/storage/img/pexels-krivec-ales-548264.jpg'); 
     background-size: cover;
     background-attachment: fixed;
-    position: relative;
+    position: relative; */
+     
 
-    /* background: hsla(225, 29%, 22%, 0.726); 
-    background: -webkit-linear-gradient(to right, #859398, #333846); 
-    background: linear-gradient(to right, hsla(197, 7%, 42%, 0.836), hsla(197, 13%, 21%, 0.863)),url('http://localhost/bizsett/public/storage/img/pexels-pixabay-459728.jpg');  
-*/
+    /* background: hsla(225, 29%, 22%, 0.582); 
+    background: -webkit-linear-gradient(to right, #85939888, #454b5ab0);  */
+    /* background: linear-gradient(to right, hsla(197, 7%, 42%, 0.836), hsla(197, 13%, 21%, 0.863)),url('http://localhost/bizsett/public/storage/img/pexels-pixabay-459728.jpg');   */
+
   }
 
-
+ 
 
    h1 {font-size: 66px; font-weight: 600; line-height: 80px}
   p {font-size: 18px; color: rgb(0, 0, 0); line-height: 1.8; margin-bottom: 0;} 
 
 
-  section {
+  /* section {
     padding: 120px 0;
-  }
+  } */
 
 
    .nav-link {

@@ -1,9 +1,6 @@
 @extends('layouts.dashboard')
-{{-- @extends('adminlte::page') --}}
-@section('title', 'Usuarios')
-
+@section('title', 'Bizsett | Usuarios')
 @section('content_header')
-    <h1>Dashboard</h1>
 @stop
 
 @section('content')
@@ -13,7 +10,7 @@
 
 
 </head>
-
+<div class="text">Usuarios</div>
    <br>
    
    <form action="{{route('users.create')}}">
@@ -29,40 +26,36 @@
                <th>Id</th>
                <th>Nombre</th>
                <th>Apellidos</th>
-               <th>Telefono</th>
-               <th>Tipo de documento</th>
-               <th>Número de documento</th>
-               <th>Dirección</th>
-               <th>Ciudad</th>
-               <th>Género</th>
-               <th>Tipo persona</th>
                <th>Correo</th>
                <th>Contraseña</th>
+               <th>Tipo de documento</th>
+               <th>Número de documento</th>
+               <th>Tipo persona</th>
                <th>Acciones</th>
          </thead>
 
          <tbody>
             @foreach ($users as $user)
+            <?php 
+               $tipopersona = $user['tipopersona'];
+               $tipodocumento = $user['tipodocumento']
+               ?>
             <tr>
-               <td>{{$user->id}}</td>
-               <td>{{$user->nombre}}</td>
-               <td>{{$user->apellidos}}</td>
-               <td>{{$user->telefono}}</td>
-               <td>{{$user->tipodocumento->nombre}}</td>
-               <td>{{$user->numero_documento}}</td>
-               <td>{{$user->direccion}}</td>
-               <td>{{$user->ciudade->nombre_ciudad}}</td>
-               <td>{{$user->genero->nombre_genero}}</td>
-               <td>{{$user->tipopersona->nombre}}</td>
-               <td>{{$user->email}}</td>
-               <td>{{$user->password}}</td>   
+               <td>{{$user['id']}}</td>
+               <td>{{$user['nombre']}}</td>
+               <td>{{$user['apellidos']}}</td>
+               <td>{{$user['email']}}</td>
+               <td>************</td>   
+               <td>{{$tipodocumento['nombre']}}</td>
+               <td>{{$user['numero_documento']}}</td>
+               <td>{{$tipopersona['nombre']}}</td>
 
                <td>
                   <div class="btn-group">
-                     <form action="{{route('users.edit', $user)}}">
+                     <form action="{{route('users.edit', $user['id'])}}">
                         <button type="submit" class="btn bg-black border-black btn-outline-warning mx-1">Editar</button>
                      </form>
-                     <form action="{{route('users.destroy', $user)}}" method="post">
+                     <form action="{{route('users.destroy', $user['id'])}}" onclick="return confirm('¿Seguro que quiere eliminar este registro?')" method="post">
                         @csrf
                         @method('delete')
                            <button type="submit" class="btn bg-black border-black btn-outline-danger" >Eliminar</button>
@@ -80,13 +73,13 @@
                 </tr>
             @endif
          </tbody>
-         <tfoot>
+         {{-- <tfoot>
             <nav aria-label="Page navigation example">
                <ul class="pagination">
                   <td class="pagination-dark" colspan="4">{{$users->links()}}</td>
                </ul>
             </nav>
-         </tfoot>
+         </tfoot> --}}
       </table>
    </div> 
 </div>

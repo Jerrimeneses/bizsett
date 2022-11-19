@@ -7,32 +7,37 @@ use App\Models\Persona;
 use App\Models\Buzon;
 use App\Http\Requests\StoreBuzon;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 class BuzonController extends Controller
 {
 
     public function index(){
 
-        $buzons =Buzon::all();
+        $buzones = Http::get('http://localhost/api.bizsett/public/v1/buzons');
+        $buzonsArray = $buzones->json();
 
-        $buzons =Buzon::query()->when(request('search'), function($query) {
-            return $query->where('mensaje', 'like', '%' . request('search') . '%');
-        })->paginate(5);
+        $users = Http::get('http://localhost/api.bizsett/public/v1/users');
+        $usersArray = $users->json();
 
-    return view('buzones.index', compact('buzons'));
+        return view('buzones.index', compact('buzonsArray', 'usersArray'));
+
+        
+    
     }
 
-    
 
 
     public function create(){
 
-        $users =User::all();
+
+        $users = Http::get('http://localhost/api.bizsett/public/v1/users');
+        $usersArray = $users->json();
 
         if (auth()->user()->tipopersona_id == '2'){
-            return view('buzones.create', compact('users'));
+            return view('buzones.create', compact('usersArray'));
         }else{
-            return view('create_buzon', compact('users'));
+            return view('buzones.create_buzon', compact('users'));
         }
     }
 
@@ -42,7 +47,8 @@ class BuzonController extends Controller
     public function store(StoreBuzon $request){
 
         if (auth()->user()->tipopersona_id == '2'){
-            $buzon = Buzon::create($request->all());
+
+            Http::post('http://localhost/api.bizsett/public/v1/buzons', $request);
 
             return redirect()->route('buzons.index');
         }
@@ -59,26 +65,24 @@ class BuzonController extends Controller
 
     
 
-    public function edit(Buzon $buzon, ){
+    public function edit($buzon){
 
-        $users =User::all();
+        $users = Http::get('http://localhost/api.bizsett/public/v1/users');
+        $usersArray = $users->json();
 
-        return view('buzones.edit', compact('buzon', 'users'));
+        $buzon = Http::get('http://localhost/api.bizsett/public/v1/buzons/'.$buzon);
+        $buzon = $buzon->json();
+
+        return view('buzones.edit', compact('buzon', 'usersArray'));
     }
 
 
 
-    public function update(Request $request, Buzon $buzon){
+    public function update(Request $request, $buzon){
 
-        $request->validate([
-            
-            'mensaje'=>'Required',
-            
-        ]);
+        Http::put('http://localhost/api.bizsett/public/v1/buzons/'.$buzon, $request);
+     
 
-        
-        $buzon->update($request->all());
-        $buzons =Buzon::all();
         if (auth()->user()->tipopersona_id == '2'){
             return redirect(route('buzons.index'));
         }else{
@@ -86,8 +90,9 @@ class BuzonController extends Controller
         }
     }
 
-    public function destroy(Buzon $buzon){
-        $buzon->delete();
+    public function destroy($buzon){
+        
+        Http::delete('http://localhost/api.bizsett/public/v1/buzons/'.$buzon);
 
         return redirect()->route('buzons.index');
     }

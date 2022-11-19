@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Buzon')
+@section('title', 'Bizsett | Buzon PQRS')
 
 @section('content')
 
@@ -41,9 +41,9 @@
                     <select name="user_id" id="iduser" class="form-select border border-gray-200
                     rounded-lg" aria-label="Default select example">
                         
-                        @foreach ($users as $user)
+                        @foreach ($usersArray as $user)
                             
-                            <option value="{{$user->id}}">{{$user->nombre}}</option>
+                            <option value="{{$user['id']}}">{{$user['nombre']}}</option>
                         @endforeach
                     </select>
                 </label>

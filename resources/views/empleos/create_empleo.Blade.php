@@ -1,6 +1,6 @@
 @extends('layouts.plantilla')
 
-@section('title', 'Solicitud de empleo')
+@section('title', 'Bizsett | Enviar Hoja de vida')
 
 @section('content')
 
@@ -15,15 +15,19 @@ rounded-lg shadow-lg">
     <h1 class="text-3xl text-center font-bold">Solicitar puesto de trabajo</h1>
 
     <center>
+        <?php 
+            $user= auth()->user()->id; 
+            $emprendimiento = $emprendimiento['id'];
+        ?>
 
-    <form action="{{route('empleos.store', $emprendimiento)}}" method="POST" enctype="multipart/form-data">
+    <form action="{{'http://localhost/api.bizsett/public/v1/empleos/crear/'. $user.'/'.$emprendimiento}}" method="POST" enctype="multipart/form-data">
 
         @csrf
 
         <label >
             Asunto:
             <br>
-            <input type="textarea" class="form-control" name="mensaje_trabajo" value="{{old('mensaje_trabajo')}}">
+            <textarea class="form-control" name="mensaje_trabajo" value="{{old('mensaje_trabajo')}}"></textarea>
         </label>
         <br>
 

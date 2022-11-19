@@ -1,17 +1,17 @@
 @extends('layouts.plantilla')
 
-@section('title', 'Inversiones')
+@section('title', 'Bizsett | Invertir')
 
 @section('content')
 
 <div class="block mx-auto my-12 p-8 bg-white w-1/3 border border-gray-200
     rounded-lg shadow-lg">
 
-        <h1 class="text-3xl text-center font-bold">Enviar Propuesta a {{$emprendimiento->nombre_emprendimiento}}</h1>
+        <h1 class="text-3xl text-center font-bold">Enviar Propuesta a {{$emprendimiento['nombre']}}</h1>
     
     <br>
     
-    <form action="{{route('inversionistas.store', $emprendimiento)}}" method="POST">
+    <form action="{{route('inversionistas.store', $emprendimiento['id'])}}" method="POST">
         @csrf
         <center>
             <label for="">

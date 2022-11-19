@@ -10,24 +10,26 @@ use Illuminate\Http\Request;
 use App\Models\Publicacione;
 use App\Models\Reaccione;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
 {
     public function __invoke(){
 
-        //$publicaciones =Publicacione::orderBy('id', 'desc')->paginate();
-        $multimedias =Multimedia::all();
-        $emprendimientos =Emprendimiento::all();
-        $comentarios =Comentario::all();
-        $reacciones =Reaccione::all();
-        $users =User::all();
+        $emprendimientos = Http::get('http://localhost/api.bizsett/public/v1/emprendimientos');
+        $emprendimientos = $emprendimientos->json();
 
-        $publicaciones = Publicacione::query()->when(request('search'), function($query) {
-                return $query->where('descripcion', 'like', '%' . request('search') . '%');
-            })->orderBy('id', 'desc')->paginate(5);
+        $publicaciones = Http::get('http://localhost/api.bizsett/public/v1/publicaciones?included=emprendimiento.user,reacciones.user,comentarios.user');
+        $publicaciones = $publicaciones->json();
+        
+        $publicaciones = collect($publicaciones);
+        $publicaciones = $publicaciones->sortByDesc('id');
 
+        $reacciones = Http::get('http://localhost/api.bizsett/public/v1/reacciones');
+        $reacciones = $reacciones->json();
 
-        return view('home', compact('publicaciones','multimedias', 'emprendimientos', 'users', 'comentarios', 'reacciones'));
+        return view('home', compact('publicaciones', 'emprendimientos', 'reacciones'));
+
     }
 
 
@@ -37,20 +39,4 @@ class HomeController extends Controller
         return view('layouts.dashboard');
     }
 
-
-
-    public function principal(){
-
-        $publicaciones =Publicacione::all();
-        $multimedias =Multimedia::all();
-
-        return view('principal', compact('publicaciones', 'multimedias'));
-    }
-
-
-
-    public function prueba(){
-
-        return view('prueba');
-    }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.plantilla')
 
-@section('title', 'Publicaciones')
+@section('title', 'Bizsett | Editar Publicación')
 
 @section('content')
 
@@ -8,23 +8,25 @@
 
     <h1 class="text-3xl text-center font-bold">Editar publicación</h1>
 
+    <?php $emprendimiento = $publicacione['emprendimiento']; ?>
 
-    <strong>Publicación de: {{$publicacione->emprendimiento->nombre_emprendimiento}}</strong>
+    <strong>Publicación de: {{$emprendimiento['nombre']}}</strong>
     <br>
     <br>
+    <?php $id = auth()->user()->id; ?>
     <center>
-    <form action="{{route('publicaciones.update', $publicacione)}}" method="post" enctype="multipart/form-data">
+    <form action="{{'http://localhost/api.bizsett/public/v1/publicaciones/editar/'.$publicacione['id'].'/'.$id}}" method="post" enctype="multipart/form-data">
 
         @csrf
         @method('put')
 
-        <textarea name="descripcion" class="form-control border borde-white" placeholder="Descripción..." id="descripcion" value="">{{old('descripcion', $publicacione->descripcion)}}</textarea>
+        <textarea name="descripcion" class="form-control border borde-white" placeholder="Descripción..." id="descripcion" value="">{{old('descripcion', $publicacione['descripcion'])}}</textarea>
 
         <br>
         <br>
 
 
-        <input type="file" class="border border-black" name="url_contenido" value="{{old('url_contenido', $multimedia->url_contenido)}}">
+        <input type="file" class="border border-black" name="imagen" value="{{old('imagen', $publicacione['imagen'])}}">
 
     
         <br>

@@ -2,112 +2,92 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Emprendimiento;
 use App\Http\Requests\StoreEmprendimiento;
-use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 class EmprendimientoController extends Controller
 {
 
     public function index(){
 
-        $emprendimientos =Emprendimiento::all();
+        $emprendimientos = Http::get('http://localhost/api.bizsett/public/v1/emprendimientos?included=user,ciudade');
+        $emprendimientos = $emprendimientos->json();
 
-        $emprendimientos = Emprendimiento::query()->when(request('search'), function($query) {
-            return $query->where('nombre_emprendimiento', 'like', '%' . request('search') . '%')
-            ->orWhere('clasificacion', 'like', '%' . request('search') . '%')
-            ->orWhere('descripcion', 'like', '%' . request('search') . '%');
-        })->paginate(5);
+        $users = Http::get('http://localhost/api.bizsett/public/v1/users');
+        $users = $users->json();
 
-    return view('emprendimientos.index', compact('emprendimientos'));
+        // $emprendimientos = Emprendimiento::query()->when(request('search'), function($query) {
+        //     return $query->where('nombre_emprendimiento', 'like', '%' . request('search') . '%')
+        //     ->orWhere('clasificacion', 'like', '%' . request('search') . '%')
+        //     ->orWhere('descripcion', 'like', '%' . request('search') . '%');
+        // })->paginate(5);
+
+    return view('emprendimientos.index', compact('emprendimientos', 'users'));
     }
-
-    
-
 
      public function create(){
-
-        $users =User::all();
+        $ciudades = Http::get('http://localhost/api.bizsett/public/v1/ciudades');
+        $ciudades = $ciudades->json();
 
         if (auth()->user()->tipopersona_id == '2'){
-            return view('emprendimientos.create', compact('users'));
+            $users = Http::get('http://localhost/api.bizsett/public/v1/users?included=emprendimiento');
+            $users = $users->json();
+            return view('emprendimientos.create', compact('users', 'ciudades'));
         }else{
-            return view('create_emprendimiento', compact('users'));
+            return view('emprendimientos.create_emprendimiento', compact('ciudades'));
         }
     }
-
-
-
 
     public function store(StoreEmprendimiento $request){
 
-        $users =User::all();
-
         if (auth()->user()->tipopersona_id == '2'){
+            Http::post('http://localhost/api.bizsett/public/v1/emprendimientos', $request);
 
-        $emprendimiento = Emprendimiento::create($request->all());
-        return redirect()->route('emprendimientos.index');
+            return redirect()->route('emprendimientos.index');
         }else{
-        $emprendimiento = new Emprendimiento();
+            $request = [
+            "nombre" => $request->nombre,
+            "categoria" => $request->categoria,
+            "descripcion" => $request->descripcion,
+            "telefono" => $request->telefono,
+            "direccion" => $request->direccion,
+            "ciudade_id" => $request->ciudade_id,
+            "user_id" => auth()->user()->id
+            ];
+            Http::post('http://localhost/api.bizsett/public/v1/emprendimientos', $request);
 
-        $emprendimiento->nombre_emprendimiento = $request->nombre_emprendimiento;
-        $emprendimiento->clasificacion = $request->clasificacion;
-        $emprendimiento->descripcion = $request->descripcion;
-        $emprendimiento->user_id = auth()->user()->id;
-
-        
-
-        $emprendimiento->save();
-
-        return redirect()->route('perfilemp.me');
+            return redirect()->route('perfilemp.me');
         }
     }
 
-    
+    public function edit($emprendimiento){
+        $emprendimiento = Http::get('http://localhost/api.bizsett/public/v1/emprendimientos/'.$emprendimiento);
+        $emprendimiento = $emprendimiento->json();
 
-    public function edit(Emprendimiento $emprendimiento){
+        $users = Http::get('http://localhost/api.bizsett/public/v1/users');
+        $users = $users->json();
 
         if (auth()->user()->tipopersona_id == '2'){
-            return view('emprendimientos.edit', compact('emprendimiento'));
+            return view('emprendimientos.edit', compact('emprendimiento', 'users'));
+            
         }else{
             return view('edit_emprendimiento', compact('emprendimiento'));
         }
     }
 
-
-
-    public function update(Request $request, Emprendimiento $emprendimiento){
-
-        $request->validate([
-            'nombre_emprendimiento'=>'Required',
-            'clasificacion'=>'Required',
-            'descripcion'=>'Required',
-        ]);
-
-        /*$curso->name = $request->name;
-        $curso->descripcion = $request->descripcion;
-        $curso->categoria = $request->categoria;
-
-        $curso->save();*/
-
-        $emprendimiento->update($request->all());
-        $emprendimientos =Emprendimiento::all();
+    public function update(StoreEmprendimiento $request, $emprendimiento){
+        Http::put('http://localhost/api.bizsett/public/v1/emprendimientos/'.$emprendimiento, $request);
         if (auth()->user()->tipopersona_id == '2'){
-        return view('emprendimientos.index',  compact('emprendimientos'));
+        return redirect(route('emprendimientos.index'));
         }
         else{
             return redirect(route('perfilemp.me'));
         }
     }
 
-    public function destroy(Emprendimiento $emprendimiento){
-        $emprendimiento->delete();
-
+    public function destroy($emprendimiento){
+        Http::delete('http://localhost/api.bizsett/public/v1/emprendimientos/'.$emprendimiento);
         return redirect()->route('emprendimientos.index');
     }
-
-
-   
     
 }

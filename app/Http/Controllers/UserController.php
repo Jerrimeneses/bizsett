@@ -11,34 +11,35 @@ use App\Models\Ciudade;
 use App\Models\Departamento;
 use App\Models\Tipopersona;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
     
     public function index(){
 
-        $users =User::all();
-        $departamentos =Departamento::all();
-        $ciudades =Ciudade::all();
+        $users = Http::get('http://localhost/api.bizsett/public/v1/users?included=tipopersona,tipodocumento');
+        $users = $users->json();
 
-        $users = User::query()->when(request('search'), function($query) {
-            return $query->where('nombre', 'like', '%' . request('search') . '%')
-            ->orWhere('apellidos', 'like', '%' . request('search') . '%');
-        })->paginate(5);
 
-    return view('users.index', compact('users', 'departamentos', 'ciudades'));
+        // $users = User::query()->when(request('search'), function($query) {
+        //     return $query->where('nombre', 'like', '%' . request('search') . '%')
+        //     ->orWhere('apellidos', 'like', '%' . request('search') . '%');
+        // })->paginate(5);
+
+    return view('users.index', compact('users'));
     }
 
 
      public function create(){
 
-        $tipodocumentos =Tipodocumento::all();
-        $generos =Genero::all();
-        $ciudades =Ciudade::all();
-        $tipopersonas =Tipopersona::all();
+        $tipodocumentos = Http::get('http://localhost/api.bizsett/public/v1/tipodocumentos');
+        $tipodocumentos = $tipodocumentos->json();
 
-        return view('users.create', compact('tipodocumentos', 'generos', 'ciudades', 'tipopersonas'));
+        $tipopersonas = Http::get('http://localhost/api.bizsett/public/v1/tipopersonas');
+        $tipopersonas = $tipopersonas->json();
+
+        return view('users.create', compact('tipodocumentos', 'tipopersonas'));
     }
 
 
@@ -46,29 +47,18 @@ class UserController extends Controller
 
     public function store(StoreUser $request){
 
-        $user = new User();
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->nombre = $request->nombre;
-        $user->apellidos = $request->apellidos;
-        $user->telefono = $request->telefono;
-        $user->numero_documento = $request->numero_documento;
-        $user->direccion = $request->direccion;
-        $user->tipodocumento_id = $request->tipodocumento_id;
-        $user->ciudade_id = $request->ciudade_id;
-        $user->genero_id = $request->genero_id;
-        $user->tipopersona_id = $request->tipopersona_id;
+        $request = [
+                "email" => $request->email,
+                "password" => $request->password,
+                "nombre" => $request->nombre,
+                "apellidos" => $request->apellidos,
+                "numero_documento" => $request->numero_documento,
+                "tipodocumento_id" => $request->tipodocumento_id,
+                "tipopersona_id" => $request->tipopersona_id,
+                "foto_perfil" => 'undraw_avatar.svg'
+                ];
 
-        if ($request->foto_perfil == ''){
-            $user->foto_perfil = 'null';
-        }
-        else{
-        $user['foto_perfil'] = time() . '_' . $request->file(key: 'foto_perfil')->getClientOriginalName();
-        $request->file(key: 'foto_perfil')->storeAs(path:'fotos_perfiles', name: $user['foto_perfil']);
-        }
-
-
-        $user->save();
+        Http::post('http://localhost/api.bizsett/public/v1/users', $request);
 
         return redirect()->route('users.index');
         
@@ -76,76 +66,74 @@ class UserController extends Controller
 
     
 
-    public function edit(User $user){
+    public function edit($user){
 
-        $tipodocumentos =Tipodocumento::all();
-        $generos =Genero::all();
-        $ciudades =Ciudade::all();
-        $tipopersonas =Tipopersona::all();
+        $tipodocumentos = Http::get('http://localhost/api.bizsett/public/v1/tipodocumentos');
+        $tipodocumentos = $tipodocumentos->json();
 
-        return view('users.edit', compact('user', 'tipodocumentos', 'generos', 'ciudades', 'tipopersonas'));
+        $tipopersonas = Http::get('http://localhost/api.bizsett/public/v1/tipopersonas');
+        $tipopersonas = $tipopersonas->json();
+
+        $user = Http::get('http://localhost/api.bizsett/public/v1/users/'.$user);
+        $user = $user->json();
+
+        return view('users.edit', compact('user', 'tipodocumentos', 'tipopersonas'));
     }
 
 
 
-    public function update(Request $request, User $user){
-
-        $request->validate([
-            'nombre'=>'Required',
-            'apellidos'=>'Required',
-            'telefono'=>'Required',
-            'numero_documento'=>'Required',
-            'direccion'=>'Required'
-        ]);
+    public function update(Request $request,User $user){
 
 
+        
         $user->email = $request->email;
         $user->password = $request->password;
         $user->nombre = $request->nombre;
         $user->apellidos = $request->apellidos;
-        $user->telefono = $request->telefono;
-        $user->numero_documento = $request->numero_documento;
-        $user->direccion = $request->direccion;
-        $user->tipodocumento_id = $request->tipodocumento_id;
-        $user->ciudade_id = $request->ciudade_id;
-        $user->genero_id = $request->genero_id;
-        $user->tipopersona_id = $request->tipopersona_id;
 
         $user->save();
+
+        $request = [
+            "email" => $request->email,
+            "password" => $request->password,
+            "nombre" => $request->nombre,
+            "apellidos" => $request->apellidos,
+            "numero_documento" => $request->numero_documento,
+            "tipodocumento_id" => $request->tipodocumento_id,
+            "tipopersona_id" => $request->tipopersona_id,
+            ];
+
+        Http::put('http://localhost/api.bizsett/public/v1/users/'.$user->id, $request);
+        
 
         return redirect(route('users.index'));
         
     }
 
     public function destroy(User $user){
-        
+
         $user->delete();
+        
+        Http::delete('http://localhost/api.bizsett/public/v1/users/'.$user->id);
 
         return redirect()->route('users.index');
     }
 
     public function actualizar(Request $request, User $user){
 
-        $request->validate([
-            'nombre'=>'Required',
-            'apellidos'=>'Required',
-            'telefono'=>'Required',
-            'direccion'=>'Required'
-        ]);
-
 
         $user->email = $request->email;
         $user->password = $request->password;
         $user->nombre = $request->nombre;
         $user->apellidos = $request->apellidos;
-        $user->telefono = $request->telefono;
-        $user->direccion = $request->direccion;
 
         $user->save();
 
+        Http::put('http://localhost/api.bizsett/public/v1/users/'.$user, $request);
+
         return redirect(route('home'));
 
-        //return $user;
+      
         
     }
 

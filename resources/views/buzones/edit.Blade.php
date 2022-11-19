@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Buzon')
+@section('title', 'Bizsett | Buzon PQRS')
 
 @section('content')
 <div class="container-fluid">
@@ -12,8 +12,7 @@
     
         <div class="col-5 block border border-secondary rounded-lg shadow-lg" style="background-color: rgb(172, 172, 172)">
             <center>
-            <form action="{{route('buzons.update', $buzon)}}" method="post">
-
+            <form action="{{route('buzons.update', $buzon['id'])}}" method="post">
             @csrf
             @method('put')
             <br>
@@ -21,10 +20,16 @@
             <p class="h1">¡Ayudanos a ayudarte!</p>
 
             <br>
-            <strong>Buzon de: {{$buzon->user->nombre}}</strong>
+            @foreach ($usersArray as $user)
+                @if($user['id'] == $buzon['user_id'])
+                    <strong>Buzon de: {{$user['nombre']}}</strong>
+                @endif
+            @endforeach
+            
+            {{-- <strong>Buzon de: {{$buzon->user->nombre}}</strong> --}}
             <br>
 
-            <textarea name="mensaje" class="form-control" style="height: 100px" placeholder="Deja una sujerencia o queja aquí" id="floatingTextarea">{{old('mensaje', $buzon->mensaje)}}</textarea>
+            <textarea name="mensaje" class="form-control" style="height: 100px" placeholder="Deja una sujerencia o queja aquí" id="floatingTextarea">{{old('mensaje', $buzon['mensaje'])}}</textarea>
 
             @error('mensaje')
                 <br>
@@ -39,10 +44,9 @@
                     <br>
                     <select name="user_id" id="iduser" class="form-select border border-gray-200
                     rounded-lg" aria-label="Default select example">
-                        <option selected>Usuario</option>
-                        @foreach ($users as $user)
+                        @foreach ($usersArray as $user)
                             
-                            <option value="{{$user->id}}">{{$user->nombre}}</option>
+                            <option value="{{$user['id']}}">{{$user['nombre']}}</option>
                         @endforeach
                     </select>
                 </label>
@@ -52,7 +56,7 @@
 
                 <button class="btn" style = "background-color:rgb(255, 174, 0) "  type="submit">Actualizar</button>
                 <br>
-                <a style="color:black" href="{{route('buzons.index', $buzon)}}"><b>cancelar</b></a>
+                <a style="color:black" href="{{route('buzons.index')}}"><b>cancelar</b></a>
                 
             @else
 

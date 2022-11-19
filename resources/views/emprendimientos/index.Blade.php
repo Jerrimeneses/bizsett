@@ -1,10 +1,10 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Emprendimientos')
+@section('title', 'Bizsett | Emprendimientos')
 
 @section('content')
 
-
+<div class="text">Emprendimientos</div>
    <br>
       <form action="{{route('emprendimientos.create')}}">
             <button type="submit" class="btn bg-black border-black btn-outline-info" >Crear</button>
@@ -23,27 +23,39 @@
          <th>Id</th>
          <th>Nombre</th>
          <th>Descripción</th>
-         <th>Clasificación</th>
+         <th>Categoría</th>
+         <th>Teléfono</th>
+         <th>Dirección</th>
+         <th>Ciudad</th>
          <th>usuario</th>
          <th>Acciones</th>
 
       </thead>
 
-      <tbody>
+      <tbody width="100">
          @foreach ($emprendimientos as $emprendimiento)
+
+            <?php 
+               $user= $emprendimiento['user'];
+               $ciudade= $emprendimiento['ciudade'];
+            ?>
+
             <tr>
-               <td>{{$emprendimiento->id}}</td>
-               <td>{{$emprendimiento->nombre_emprendimiento}}</td>
-               <td>{{$emprendimiento->descripcion}}</td>
-               <td>{{$emprendimiento->clasificacion}}</td>
-               <td>{{$emprendimiento->user->nombre}}</td>
+               <td>{{$emprendimiento['id']}}</td>
+               <td>{{$emprendimiento['nombre']}}</td>
+               <td>{{$emprendimiento['descripcion']}}</td>
+               <td>{{$emprendimiento['categoria']}}</td>
+               <td>{{$emprendimiento['telefono']}}</td>
+               <td>{{$emprendimiento['direccion']}}</td>
+               <td>{{$ciudade['nombre_ciudad']}}</td>
+               <td>{{$user['nombre']}} {{$user['apellidos']}}</td>
 
                <td>
                   <div class="btn-group">
-                     <form action="{{route('emprendimientos.edit', $emprendimiento)}}">
+                     <form action="{{route('emprendimientos.edit', $emprendimiento['id'])}}">
                         <button type="submit" class="btn bg-black border-black btn-outline-warning mx-1">Editar</button>
                      </form>
-                     <form action="{{route('emprendimientos.destroy', $emprendimiento)}}" method="post">
+                     <form action="{{route('emprendimientos.destroy', $emprendimiento['id'])}}" onclick="return confirm('¿Seguro que quiere eliminar este registro?')" method="post">
                         @csrf
                         @method('delete')
                            <button type="submit" class="btn bg-black border-black btn-outline-danger" >Eliminar</button>
@@ -53,13 +65,7 @@
             </tr>
          @endforeach
       </tbody>
-      <tfoot>
-         <nav aria-label="Page navigation example">
-            <ul class="pagination">
-               <td class="pagination-dark" colspan="4">{{$users->links()}}</td>
-            </ul>
-         </nav>
-      </tfoot>
+
    </table>
    </div>
 </div>

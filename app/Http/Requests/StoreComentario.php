@@ -39,7 +39,7 @@ class StoreComentario extends FormRequest
     public function messages()
     {
         return[
-            'mensaje.required'=>'Debe ingresar comentario',
+            'comentario.required'=>'Debe ingresar comentario',
             
         ];
     }

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Inversiones')
+@section('title', 'Bizsett | Editar inversión')
 
 @section('content')
 
@@ -11,18 +11,23 @@
     <h1 class="text-3xl text-center font-bold">Editar datos de la propuesta de inversión</h1>
 
 
-    <strong>Dirigido a: {{$inversionista->emprendimiento->nombre_emprendimiento}}</strong>
+    @foreach($emprendimientos as $emprendimiento)
+            @if ($inversionista['emprendimiento_id'] == $emprendimiento['id'])
+            <strong>Dirigido a: {{$emprendimiento['nombre']}}</strong>
+            @endif
+         @endforeach
+    
     <br>
     <br>
 
-    <form action="{{route('inversionistas.update', $inversionista)}}" method="post">
+    <form action="{{route('inversionistas.update', $inversionista['id'])}}" method="post">
 
         @csrf
         @method('put')
 
         <div class="row">
             <div class="col-md-12 form-floating">
-                <textarea name="propuesta" class="form-control" placeholder="Propuesta de inversión" id="floatingTextarea">{{old('propuesta', $inversionista->propuesta)}}</textarea>
+                <textarea name="propuesta" class="form-control" placeholder="Propuesta de inversión" id="floatingTextarea">{{old('propuesta', $inversionista['propuesta'])}}</textarea>
                 <label for="floatingTextarea">Propuesta</label>
             </div>
             </div>
@@ -35,7 +40,7 @@
             @enderror
         <br>
 
-        <!-- @error('nombre_emprendimiento')
+        <!-- @error('nombreo')
             <br>
             <small>*{{$message}}</small>
             <br>

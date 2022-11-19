@@ -38,9 +38,7 @@
                               <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Foto de perfil </label>
                               <div class="d-flex justify-content-evenly">
             
-                                    <a href="{{route('foto.me', $user)}}">
-                                        <img class="rounded-circle" src="{{ 'http://localhost/bizsett/public/storage/fotos_perfiles/' . $user->foto_perfil}}" style="width: 90px; height: 90px;">
-                                    </a>
+                                        <img class="rounded-circle" src="{{'http://localhost/api.bizsett/public/storage/fotos_perfiles/'.$user->foto_perfil}}" style="width: 90px; height: 90px;">
                         
                             </div>
                             </div>
@@ -67,13 +65,10 @@
                               <td>*************</td>
                             </tr>
                             <tr>
-                              <th scope="row">Telefono</th>
-                              <td>{{$user->telefono}}</td>
+                              <th scope="row">Documento de identidad</th>
+                              <td>{{$user->tipodocumento->nombre}}. {{$user->numero_documento}}</td>
                             </tr>
-                            <tr>
-                              <th scope="row">Dirección</th>
-                              <td>{{$user->direccion}}</td>
-                            </tr>
+                            
                         </tbody>
                       </table>
     
@@ -93,7 +88,7 @@
                           <div class="d-flex justify-content-evenly">
         
                                 <a href="{{route('foto.me', $user)}}">
-                                    <img class="rounded-circle" src="{{ 'http://localhost/bizsett/public/storage/fotos_perfiles/' . $user->foto_perfil}}" style="width: 90px; height: 90px;">
+                                    <img class="rounded-circle" src="{{'http://localhost/api.bizsett/public/storage/fotos_perfiles/'.$user->foto_perfil}}" style="width: 90px; height: 90px;">
                                 </a>
                         
                         </div>
@@ -125,20 +120,6 @@
                           <label for="Job" class="col-md-4 col-lg-3 col-form-label">Contraseña</label>
                           <div class="col-md-8 col-lg-9">
                             <input name="password" type="password" class="form-control" id="Job" value="{{$user->password}}">
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="Country" class="col-md-4 col-lg-3 col-form-label">Telefono</label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="telefono" type="text" class="form-control" id="Country" value="{{$user->telefono}}">
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="Address" class="col-md-4 col-lg-3 col-form-label">Dirección </label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="direccion" type="text" class="form-control" id="Address" value="{{$user->direccion}}">
                           </div>
                         </div>
                         

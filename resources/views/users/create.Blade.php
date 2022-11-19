@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Usuarios')
+@section('title', 'Bizsett | Registrar usuario')
 
 @section('content')
 
@@ -51,9 +51,9 @@
                     placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Número de documento" name="numero_documento" value="{{old('numerodocumento')}}" >
                 </label>
                 <label for="">
-                    <select name="tipodocumento_id" id="idtipodocumento" class="form-select form-select-sm my-2 mx-2" aria-label=".form-select-sm example">
+                    <select name="tipodocumento_id" id="idtipodocumento" class="form-select form-select-sm my-2 mx-2 border border-gray-200 rounded-md bg-gray-200" aria-label=".form-select-sm example">
                         @foreach ($tipodocumentos as $tipodocumento)
-                            <option value="{{$tipodocumento->id}}">{{$tipodocumento->nombre}}</option>
+                            <option value="{{$tipodocumento['id']}}">{{$tipodocumento['nombre']}}</option>
                         @endforeach
                     </select>
                 </label>
@@ -64,56 +64,14 @@
                     <br>
                 @enderror
         
-        
-                    <input type="text" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg 
-                    placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Dirección" name="direccion" value="{{old('direccion')}}">
-        
-        
-                @error('direccion')
-                    <br>
-                    <small>*{{$message}}</small>
-                    <br>
-                @enderror
-        
-                <br>
-        
-                <label for="">
-                    <select name="ciudad_id" id="idciudad" class="form-select my-2" aria-label="Default select example">
-                        @foreach ($ciudades as $ciudade)
-                            <option value="{{$ciudade->id}}">{{$ciudade->nombre_ciudad}}</option>
-                        @endforeach
-                            <option selected>Ciudad</option>
-                    </select>
-                </label>
             
-            
-                <label for="">
-                    <select name="genero_id" id="idgenero" class="form-select my-2" aria-label="Default select example">
-                        @foreach ($generos as $genero)
-                            <option value="{{$genero->id}}">{{$genero->nombre_genero}}</option>
-                        @endforeach
-                            <option selected>Género</option> <br>
-                    </select>
-                </label>
         
             </div>
         
             <div class="col-1"></div>
         
             <div class="col-5">
-        
-                    <input type="tel" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg 
-                    placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Teléfono" name="telefono" value="{{old('telefono')}}">
-        
-                <br>
-        
-                @error('telefono')
-                    <br>
-                    <small>*{{$message}}</small>
-                    <br>
-                @enderror
-        
-        
+    
         
                 <input type="email" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg 
                 placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Correo" name="email" value="{{old('email')}}">
@@ -141,23 +99,19 @@
                 @enderror
         
         
-        
                 <input type="password" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg 
-                placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Confirmar contraseña" name="password_confirmation" value="{{old('passsword')}}">
+                placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Confirmar contraseña"  value="{{old('passsword')}}">
         
-        
-                <br>
-        
-                <label for=""> 
-                    <select name="tipopersona_id" id="idtipopersona" class="form-select my-2" aria-label="Default select example">
-                        @foreach ($tipopersonas as $tipopersona)
-                            <option value="{{$tipopersona->id}}">{{$tipopersona->nombre}}</option>
-                        @endforeach
-                    </select>
-                </label>
         
             </div>
         </div>
+        <label for=""> 
+            <select name="tipopersona_id" id="idtipopersona" class="form-select my-2 border border-gray-200 rounded-md bg-gray-200" aria-label="Default select example">
+                @foreach ($tipopersonas as $tipopersona)
+                    <option value="{{$tipopersona['id']}}">{{$tipopersona['nombre']}}</option>
+                @endforeach
+            </select>
+        </label>
 
             <br>
             <br>

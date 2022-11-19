@@ -24,7 +24,8 @@ class StorePublicacione extends FormRequest
     public function rules()
     {
         return [
-
+            'imagen'=>'Required',
+            'descripcion'=>'Required',
             
         ];
     }
@@ -39,7 +40,8 @@ class StorePublicacione extends FormRequest
     public function messages()
     {
         return[
-            
+            'imagen.required'=>'Debe cargar una imagen',
+            'descripcion.required'=>'Debe ingresar una descripción',
             
         ];
     }

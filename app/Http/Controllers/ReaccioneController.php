@@ -8,6 +8,7 @@ use App\Models\Reaccione;
 use App\Models\User;
 use GuzzleHttp\Psr7\Query;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ReaccioneController extends Controller
 {
@@ -16,12 +17,20 @@ class ReaccioneController extends Controller
 
     public function store($publicacione){
 
-        $reaccione = new Reaccione();
+        // $reaccione = new Reaccione();
 
-        $reaccione->publicacion_id = $publicacione;
-        $reaccione->user_id = auth()->user()->id;
+        // $reaccione->publicacione_id = $publicacione;
+        // $reaccione->user_id = auth()->user()->id;
 
-        $reaccione->save();
+        //publicacione_id = $publicacione;
+        //user_id = auth()->user()->id;
+
+        $request=["publicacione_id"=>$publicacione, "user_id"=>auth()->user()->id];
+
+        // $reaccione->save();
+
+        Http::post('http://localhost/api.bizsett/public/v1/reacciones', $request);
+
 
         $tipo = '2';
 
@@ -35,9 +44,11 @@ class ReaccioneController extends Controller
 
     //Eliminar una reacción
 
-    public function destroy(Reaccione $reaccione){
+    public function destroy($reaccione){
         
-        $reaccione->delete();
+        //$reaccione->delete();
+
+        Http::delete('http://localhost/api.bizsett/public/v1/reacciones/'.$reaccione);
         
         return redirect()->route('home');
         

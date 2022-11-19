@@ -1,6 +1,6 @@
 @extends('layouts.plantilla')
 
-@section('title', 'Buzon')
+@section('title', 'Bizsett | Buzon PQRS')
 
 @section('content')
 

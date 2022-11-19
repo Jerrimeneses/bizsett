@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Follower;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class FollowerController extends Controller
 {
@@ -11,12 +12,9 @@ class FollowerController extends Controller
     //Seguir
     public function store($emprendimiento){
 
-        $follower = new Follower();
+        $request=["emprendimiento_id"=>$emprendimiento, "user_id"=>auth()->user()->id];
 
-        $follower->emprendimiento_id = $emprendimiento;
-        $follower->user_id = auth()->user()->id;
-
-        $follower->save();
+        Http::post('http://localhost/api.bizsett/public/v1/followers', $request);
 
         $tipo = '3';
 
@@ -30,10 +28,14 @@ class FollowerController extends Controller
 
     //Dejar de seguir
 
-    public function destroy(Follower $follower){
-        
-        $emprendimiento = $follower->emprendimiento_id;
-        $follower->delete();
+    public function destroy($follower){
+
+        $seguidor=Http::get('http://localhost/api.bizsett/public/v1/followers/'.$follower.'?included=emprendimiento');
+        $seguidor = $seguidor->json();
+
+        $emprendimiento = $seguidor['emprendimiento']['id'];
+
+        Http::delete('http://localhost/api.bizsett/public/v1/followers/'.$follower);
         
         return redirect()->route('perfilemp.user', compact('emprendimiento'));
         

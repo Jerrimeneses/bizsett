@@ -31,6 +31,9 @@ use App\Http\Controllers\UserController;
 
 
 // home
+Route::get('dicc', function () {
+    return view('dicc');
+});
 
 Route::get('/', HomeController::class)-> name('home');
 

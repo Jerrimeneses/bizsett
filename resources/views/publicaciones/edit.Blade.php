@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Publicaciones')
+@section('title', 'Bizsett | Editar Publicación')
 
 @section('content')
 
@@ -8,41 +8,40 @@
 
     <h1 class="text-3xl text-center font-bold">Editar publicación</h1>
 
+    <?php $emprendimiento = $publicacione['emprendimiento']; ?>
 
-    <strong>Publicación de: {{$publicacione->emprendimiento->nombre_emprendimiento}}</strong>
+    <strong>Publicación de: {{$emprendimiento['nombre']}}</strong>
     <br>
     <br>
     <center>
-    <form action="{{route('publicaciones.update', $publicacione)}}" method="post" enctype="multipart/form-data">
-
+    <form action="{{'http://localhost/api.bizsett/public/v1/publicaciones/'.$publicacione['id']}}" method="post" enctype="multipart/form-data">
         @csrf
         @method('put')
 
-        <textarea name="descripcion" class="form-control border borde-white" placeholder="Descripción..." id="descripcion" value="">{{old('descripcion', $publicacione->descripcion)}}</textarea>
+        <textarea name="descripcion" class="form-control border borde-white" placeholder="Descripción..." id="descripcion" value="">{{old('descripcion', $publicacione['descripcion'])}}</textarea>
 
         <br>
         <br>
 
 
-        <input type="file" class="border border-black" name="url_contenido" value="{{old('url_contenido', $multimedia->url_contenido)}}">
+        <input type="file" class="border border-black" name="imagen" value="{{old('url_contenido', $publicacione['imagen'])}}">
 
-    
         <br>
 
         <br>
             <label >
+                Emprendimiento:
                 <br>
                 <select name="emprendimiento_id" id="idemprendimiento" class="form-select" aria-label="Default select example">
-                    <option selected>Emprendimiento</option>
                     @foreach ($emprendimientos as $emprendimiento)
-                        <option value="{{$emprendimiento->id}}">{{$emprendimiento->nombre_emprendimiento}}</option>
+                        <option value="{{$emprendimiento['id']}}">{{$emprendimiento['nombre']}}</option>
                     @endforeach
                 </select>
             </label>
 
             <div class="d-flex justify-content-between">
 
-                <a style="color:black" href="{{route('publicaciones.index', $publicacione )}}"><b>cancelar</b></a>
+                <a style="color:black" href="{{route('publicaciones.index',)}}"><b>cancelar</b></a>
                 <button class="btn" style = "background-color:rgb(255, 174, 0) "  type="submit">Actualizar</button>
                 
             </div>

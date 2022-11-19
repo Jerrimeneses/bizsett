@@ -7,36 +7,41 @@ use App\Models\Emprendimiento;
 use App\Models\Empleo;
 use App\Http\Requests\StoreEmpleo;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 class EmpleoController extends Controller
 {
 
     public function index(){
 
-        $empleos =Empleo::all();
+        $empleos = Http::get('http://localhost/api.bizsett/public/v1/empleos?included=emprendimiento,user');
+        $empleos = $empleos->json();
 
-        $empleos =Empleo::query()->when(request('search'), function($query) {
-            return $query->where('mensaje_trabajo', 'like', '%' . request('search') . '%');
-        })->paginate(5);
+        // $empleos =Empleo::query()->when(request('search'), function($query) {
+        //     return $query->where('mensaje_trabajo', 'like', '%' . request('search') . '%');
+        // })->paginate(5);
 
-    return view('empleos.index', compact('empleos'));
+        return view('empleos.index', compact('empleos'));
     }
 
 
     public function create(){
 
-        $emprendimientos =Emprendimiento::all();
-        $users =User::all();
+        $emprendimientos = Http::get('http://localhost/api.bizsett/public/v1/emprendimientos');
+        $emprendimientos = $emprendimientos->json();
+
+        $users = Http::get('http://localhost/api.bizsett/public/v1/users');
+        $users = $users->json();
 
         return view('empleos.create', compact('emprendimientos', 'users'));
     }
 
-    public function crear(Emprendimiento $emprendimiento){
+    public function crear($emprendimiento){
 
-        $emprendimientos =Emprendimiento::all();
-        $users =User::all();
+        $emprendimiento = Http::get('http://localhost/api.bizsett/public/v1/emprendimientos/'.$emprendimiento);
+        $emprendimiento = $emprendimiento->json(); 
 
-        return view('create_empleo', compact('emprendimientos', 'users', 'emprendimiento'));
+        return view('empleos.create_empleo', compact('emprendimiento'));
     }
 
 
@@ -71,10 +76,17 @@ class EmpleoController extends Controller
 
     
 
-    public function edit(Empleo $empleo, ){
+    public function edit($empleo){
 
-        $emprendimientos =Emprendimiento::all();
-        $users =User::all();
+        $emprendimientos = Http::get('http://localhost/api.bizsett/public/v1/emprendimientos');
+        $emprendimientos = $emprendimientos->json();
+
+        $users = Http::get('http://localhost/api.bizsett/public/v1/users');
+        $users = $users->json();
+
+        $empleo = Http::get('http://localhost/api.bizsett/public/v1/empleos/'.$empleo.'?included=emprendimiento');
+        $empleo = $empleo->json(); 
+
 
         return view('empleos.edit', compact('empleo', 'emprendimientos', 'users'));
     }
@@ -105,8 +117,9 @@ class EmpleoController extends Controller
         // }
     }
 
-    public function destroy(Empleo $empleo){
-        $empleo->delete();
+    public function destroy($empleo){
+        
+        Http::delete('http://localhost/api.bizsett/public/v1/empleos/'.$empleo);
 
         return redirect()->route('empleos.index');
     }

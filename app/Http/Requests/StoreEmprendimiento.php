@@ -25,8 +25,8 @@ class StoreEmprendimiento extends FormRequest
     {
         return [
             
-            'nombre_emprendimiento'=>'Required|max:30',
-            'clasificacion'=>'Required',
+            'nombre'=>'Required|max:30',
+            'categoria'=>'Required',
             'descripcion'=>'Required',
 
         ];
@@ -35,14 +35,15 @@ class StoreEmprendimiento extends FormRequest
     public function attributes()
     {
         return [
-            'nombre_emprendimiento'=>'nombre del emprendimiento',
+            
         ];
     }
 
     public function messages()
     {
         return[
-            'clasificacion.required'=>'Debe ingresar una clasificación',
+            'nombre.required'=>'Debe ingresar un nombre para el emprendimiento',
+            'categoria.required'=>'Debe ingresar una categoría',
             'descripcion.required'=>'Debe ingresar una descripción',
 
         ];

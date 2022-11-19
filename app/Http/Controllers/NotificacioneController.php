@@ -9,6 +9,7 @@ use App\Models\Publicacione;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class NotificacioneController extends Controller
 {
@@ -20,23 +21,26 @@ class NotificacioneController extends Controller
         
     }
 
-    public function notificaciones(Publicacione $publicacione, $tipo){
 
-        $users = User::all();
-        $emprendimientos = Emprendimiento::all();
+    public function notificaciones($publicacione, $tipo){
+
+        $users = Http::get('http://localhost/api.bizsett/public/v1/users');
+        $users = $users->json();
+
+        $emprendimientos = Http::get('http://localhost/api.bizsett/public/v1/emprendimientos');
+        $emprendimientos = $emprendimientos->json();
+
+        $publicacione = Http::get('http://localhost/api.bizsett/public/v1/publicaciones/'.$publicacione);
+        $publicacione = $publicacione->json();
         
         foreach($emprendimientos as $emprendimiento){
-            if($emprendimiento->id == $publicacione->emprendimiento_id){
+            if($emprendimiento['id'] == $publicacione['emprendimiento_id']){
                 foreach($users as $user){
-                    if($user->id == $emprendimiento->user_id){
-
-                        $notificacione = new Notificacione();
-
-                        $notificacione->reading= 'false';
-                        $notificacione->tiponotificacione_id = $tipo;
-                        $notificacione->user_id = $user->id;
+                    if($user['id'] == $emprendimiento['user_id']){
                         
-                        $notificacione->save();
+                        $request=["reading"=>'false', "tiponotificacione_id"=>$tipo, "user_id"=> $user['id']];
+
+                         Http::post('http://localhost/api.bizsett/public/v1/comentarios', $request);
 
                     }
                 }
@@ -49,7 +53,7 @@ class NotificacioneController extends Controller
     
 
     public function read(Notificacione $notificacione){
-        $user = Auth::user();
+            $user = Auth::user();
                 
             $notificacione->reading = 'true';
             $notificacione->save();

@@ -1,16 +1,15 @@
 @extends('layouts.plantilla')
 
-@section('title', 'Publicaciones')
+@section('title', 'Bizsett | Publicar')
 
 @section('content')
-
 
 <div class="block mx-auto my-12 p-8 bg-white w-1/3 border border-gray-200 rounded-lg shadow-lg">
     <center>
     <h1 class="text-3xl text-center font-bold">Publicación</h1>
     <br>
-
-    <form action="{{route('publicaciones.store')}}" method="POST" enctype="multipart/form-data">
+    <?php $id = auth()->user()->id; ?>
+    <form action="{{'http://localhost/api.bizsett/public/v1/publicaciones/crear/'.$id}}" method="POST" enctype="multipart/form-data">
     @csrf
 
         <textarea name="descripcion" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg 
@@ -19,7 +18,7 @@
         <br>
         <br>
 
-        <input type="file" id="image" class="" name="url_contenido" value="{{old('url_contenido')}}">
+        <input type="file" id="image" class="" name="imagen" value="{{old('imagen')}}">
 
         <div>
             <img id="imgSeleccionada">

@@ -29,11 +29,7 @@ class StoreUser extends FormRequest
             'apellidos'=>'Required',
             'email'=>'Required',
             'password'=>'Required',
-            'telefono'=>'Required',
             'numero_documento'=>'Required',
-            'direccion'=>'Required',
-            // 'ciudad'=>'Required',
-            // 'genero'=>'Required'
         ];
     }
 
@@ -51,11 +47,7 @@ class StoreUser extends FormRequest
             'apellidos.required'=>'Debe ingresar al menos un apellido',
             'email.required'=>'Debe ingresar un correo electrónico',
             'password.required'=>'Debe ingresar una contraseña',
-            'telefono.required'=>'Debe ingresar un número telefónico',
             'numero_documento.required'=>'Debe ingresar un número de documento',
-            'direccion.required'=>'Debe ingresar una dirección',
-            // 'ciudad.required'=>'Debe sellecionar una ciudad',
-            // 'genero.required'=>'Debe sellecionar un genero'
         ];
     }
 }

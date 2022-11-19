@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Solicitud de empleo')
+@section('title', 'Bizsett | Registrar solicitud de empleo')
 
 @section('content')
 
@@ -17,14 +17,14 @@ rounded-lg shadow-lg">
 
     <center>
 
-    <form action="{{route('empleos.store', $emprendimiento)}}" method="POST" enctype="multipart/form-data">
+    <form action="{{'http://localhost/api.bizsett/public/v1/empleos'}}" method="POST" enctype="multipart/form-data">
 
         @csrf
 
         <label >
             Asunto:
             <br>
-            <input type="textarea" class="form-control" name="mensaje_trabajo" value="{{old('mensaje_trabajo')}}">
+            <textarea class="form-control" name="mensaje_trabajo" value="{{old('mensaje_trabajo')}}"></textarea>
         </label>
         <br>
 
@@ -61,7 +61,7 @@ rounded-lg shadow-lg">
                 <select name="user_id" id="iduser" class="form-select" aria-label="Default select example">
                     
                     @foreach ($users as $user)
-                        <option value="{{$user->id}}">{{$user->nombre}}</option>
+                        <option value="{{$user['id']}}">{{$user['nombre']}}</option>
                     @endforeach
                     
                 </select>
@@ -73,7 +73,7 @@ rounded-lg shadow-lg">
                 <select name="emprendimiento_id" id="idemprendimiento" class="form-select" aria-label="Default select example">
                    
                     @foreach ($emprendimientos as $emprendimiento)
-                        <option value="{{$emprendimiento->id}}">{{$emprendimiento->nombre_emprendimiento}}</option>
+                        <option value="{{$emprendimiento['id']}}">{{$emprendimiento['nombre']}}</option>
                     @endforeach
                     
                 </select>

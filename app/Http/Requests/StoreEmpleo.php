@@ -42,7 +42,7 @@ class StoreEmpleo extends FormRequest
         return[
 
             'evidencia.required'=>'Debe cargar una hoja de vida',
-            'mensaje_trabajo.required'=>'Debe ingresar un mensaje',
+            'mensaje_trabajo.required'=>'Debe ingresar el asunto (Ej. el puesto para el cual está solicitando el empleo)',
             
         ];
     }

@@ -24,7 +24,7 @@ class MultimediaSeeder extends Seeder
 
         $multimedia->url_contenido ="1659206846_pexels-quintin-gellar-313782.jpg";
         $multimedia->multimediaable_id ="1";
-        $multimedia->multimediaable_type = 'App\Models\Publicacione';
+        $multimedia->multimediaable_type = Publicacione::class;
 
         $multimedia->save();
 
@@ -34,7 +34,7 @@ class MultimediaSeeder extends Seeder
 
         $multimedia2->url_contenido ="1659383709_pexels-stephan-seeber-1261728.jpg";
         $multimedia2->multimediaable_id ="2";
-        $multimedia2->multimediaable_type = 'App\Models\Publicacione';
+        $multimedia2->multimediaable_type = Publicacione::class;
 
         $multimedia2->save();
 
@@ -44,7 +44,7 @@ class MultimediaSeeder extends Seeder
 
         $multimedia3->url_contenido ="fondo5.jpg";
         $multimedia3->multimediaable_id ="3";
-        $multimedia3->multimediaable_type = 'App\Models\Publicacione';
+        $multimedia3->multimediaable_type = Publicacione::class;
 
         $multimedia3->save();
 
@@ -54,7 +54,7 @@ class MultimediaSeeder extends Seeder
 
         $multimedia4->url_contenido ="pexels-francesco-ungaro-1525041.jpg";
         $multimedia4->multimediaable_id ="4";
-        $multimedia4->multimediaable_type = 'App\Models\Publicacione';
+        $multimedia4->multimediaable_type = Publicacione::class;
 
         $multimedia4->save();
 
@@ -64,7 +64,7 @@ class MultimediaSeeder extends Seeder
 
         $multimedia5->url_contenido ="pexels-irina-iriser-1379636.jpg";
         $multimedia5->multimediaable_id ="5";
-        $multimedia5->multimediaable_type = 'App\Models\Publicacione';
+        $multimedia5->multimediaable_type = Publicacione::class;
 
         $multimedia5->save();
 
@@ -74,7 +74,7 @@ class MultimediaSeeder extends Seeder
 
         $multimedia6->url_contenido ="pexels-jarod-lovekamp-3791466.jpg";
         $multimedia6->multimediaable_id ="6";
-        $multimedia6->multimediaable_type = 'App\Models\Publicacione';
+        $multimedia6->multimediaable_type = Publicacione::class;
 
         $multimedia6->save();
 
@@ -84,7 +84,7 @@ class MultimediaSeeder extends Seeder
 
         $multimedia7->url_contenido ="pexels-vlad-alexandru-popa-1402787.jpg";
         $multimedia7->multimediaable_id ="7";
-        $multimedia7->multimediaable_type = 'App\Models\Publicacione';
+        $multimedia7->multimediaable_type = Publicacione::class;
 
         $multimedia7->save();
     }

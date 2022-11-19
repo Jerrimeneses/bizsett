@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Inversiones')
+@section('title', 'Bizsett | Registrar inversión')
 
 @section('content')
 
@@ -38,7 +38,7 @@
                             
                             @foreach ($users as $user)
                                 
-                                <option value="{{$user->id}}">{{$user->nombre}}</option>
+                                <option value="{{$user['id']}}">{{$user['nombre']}}</option>
                             @endforeach
                             
                         </select>
@@ -50,7 +50,7 @@
                             
                             @foreach ($emprendimientos as $emprendimiento)
                                 
-                                <option value="{{$emprendimiento->id}}">{{$emprendimiento->nombre_emprendimiento}}</option>
+                                <option value="{{$emprendimiento['id']}}">{{$emprendimiento['nombre']}}</option>
                             @endforeach
                             
                         </select>

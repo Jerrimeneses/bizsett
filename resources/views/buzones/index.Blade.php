@@ -1,10 +1,10 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Buzon')
+@section('title', 'Bizsett | Buzón PQRS')
 
 @section('content')
 
-
+<div class="text">Buzón PQRS</div>
 
    <br>
    <form action="{{route('buzons.create')}}">
@@ -29,18 +29,23 @@
       </thead>
 
       <tbody>
-         @foreach ($buzons as $buzon)
+         @foreach ($buzonsArray as $buzon)
          <tr>
-            <td>{{$buzon->id}}</td>
-            <td>{{$buzon->mensaje}}</td>
-            <td>{{$buzon->user->nombre}}</td>
+            <td>{{$buzon['id']}}</td>
+            <td>{{$buzon['mensaje']}}</td>
+            @foreach ($usersArray as $user)
+               @if ($buzon['user_id'] == $user['id'])
+                  <td>{{$user['nombre']}}</td>
+               @endif
+            @endforeach
+            
 
             <td>
                <div class="btn-group">
-                  <form action="{{route('buzons.edit', $buzon)}}">
+                  <form action="{{route('buzons.edit', $buzon['id'])}}">
                      <button type="submit" class="btn bg-black border-black btn-outline-warning mx-1">Editar</button>
                   </form>
-                  <form action="{{route('buzons.destroy', $buzon)}}" method="post">
+                  <form action="{{route('buzons.destroy', $buzon['id'])}}" onclick="return confirm('¿Seguro que quiere eliminar este registro?')" method="post">
                      @csrf
                      @method('delete')
                         <button type="submit" class="btn bg-black border-black btn-outline-danger" >Eliminar</button>
@@ -52,13 +57,13 @@
 
         @endforeach
       </tbody>
-      <tfoot>
+      {{-- <tfoot>
          <nav aria-label="Page navigation example">
             <ul class="pagination">
-               <td class="pagination-dark" colspan="4">{{$users->links()}}</td>
+               <td class="pagination-dark" colspan="4">{{$buzons->links()}}</td>
             </ul>
          </nav>
-      </tfoot>
+      </tfoot> --}}
    </table>
    </div>
 </div>
